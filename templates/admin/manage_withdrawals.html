@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Withdrawals</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .approve-btn, .reject-btn {
+            padding: 5px 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .approve-btn {
+            background-color: green;
+        }
+        .reject-btn {
+            background-color: red;
+        }
+        .processed {
+            color: gray;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .flash-message {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Manage Withdrawal Requests</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="flash-message {{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in withdrawal_requests %}
+            <tr>
+                <td>{{ request.user.username }}</td>
+                <td>${{ request.amount }}</td>
+                <td>{{ request.status }}</td>
+                <td>
+                    <form method="POST">
+                        <input type="hidden" name="request_id" value="{{ request.id }}">
+                        {% if request.status == 'Pending' %}
+                        <button type="submit" name="action" value="approve" class="approve-btn">Approve</button>
+                        <button type="submit" name="action" value="reject" class="reject-btn">Reject</button>
+                        {% else %}
+                        <span class="processed">Processed</span>
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

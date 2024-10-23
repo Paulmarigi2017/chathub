@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <style>
+        form {
+            max-width: 400px; /* Limiting the form width for better layout */
+            margin: auto; /* Centering the form */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9; /* Light background for contrast */
+        }
+        div {
+            margin-bottom: 15px; /* Spacing between form elements */
+        }
+        label {
+            display: block; /* Make labels block elements for easier styling */
+            margin-bottom: 5px; /* Space between label and input */
+        }
+        input[type="email"], /* Changed input type to email for validation */
+        input[type="password"] {
+            width: 100%; /* Full width inputs */
+            padding: 10px; /* Padding inside inputs */
+            border: 1px solid #ccc;
+            border-radius: 4px; /* Rounded corners */
+        }
+        button {
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            padding: 10px 15px; /* Padding for the button */
+            border: none;
+            border-radius: 5px; /* Rounded corners for button */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+
+<form method="POST" action="{{ url_for('admin_login') }}">
+    <h2>Admin Login</h2> <!-- Added a heading for better context -->
+    
+    <div>
+        <label for="email">Email</label> <!-- Updated label to Email -->
+        <input type="email" name="email" id="email" required> <!-- Changed input name to email -->
+    </div>
+    
+    <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+    </div>
+    
+    <div>
+        <button type="submit">Login</button>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %} <!-- Display flash messages -->
+</form>
+
+</body>
+</html>

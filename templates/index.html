@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app_info.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(circle at 0% 0%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 100% 100%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 50% 100%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 25% 75%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 75% 25%, #f0f0f0 10%, transparent 10%);
+            background-size: 60px 60px;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        header {
+            background-color: #f8f9fa; /* Dark white background */
+            border: 5px solid #28a745; /* Green border */
+            padding: 30px 20px;
+            color: #28a745; /* Text color green */
+            text-align: center;
+            border-radius: 10px; /* Rounded corners for the header */
+            margin: 20px; /* Margin around header */
+        }
+        h1 {
+            color: #28a745; /* Text color green */
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #ffc107; /* Yellow color for subheading */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        li {
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+        .testimonials {
+            margin-top: 30px;
+        }
+        .important-info {
+            background-color: #fff3cd;
+            padding: 15px;
+            margin-top: 30px;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+        }
+        .advertise {
+            background-color: #e2e3e5;
+            padding: 15px;
+            margin-top: 30px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #28a745; /* Green button */
+            color: #ffffff;
+            padding: 15px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 10px;
+            max-width: 200px;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+        .button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #6c757d;
+            text-align: center;
+        }
+        .join-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .testimonial-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .testimonial-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .small-links {
+            font-size: 0.8em;
+            margin: 10px 0;
+        }
+        .contact-form {
+            margin: 30px auto;
+            max-width: 500px;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #28a745;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .contact-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .contact-form button {
+            background-color: #28a745; /* Green button */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .contact-form button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo positioned above the header -->
+    
+    <!-- Header with a dark white background and green border -->
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Chathubb Logo" style="width: 150px; height: auto; margin-bottom: 20px;">
+
+        <h1>Welcome to Chathubb</h1>
+        <p>Your leading platform for chat moderation.</p>
+    </header>
+
+
+
+    <img src="{{ url_for('static', filename='images/image.jpg') }}" alt="Descriptive Text" style="max-width: 50%; height: auto;">
+     <h3>About us</h3>
+    <p1>Founded in 2020, Chathubb has grown into one of the largest and most successful chat moderation companies globally. We offer chat moderators the chance to earn a reliable income and advance their careers with us. With just a computer and a stable internet connection, anyone can join our thriving team and grow alongside our dynamic platform.<p1>
+    <h2>Join our team and become a part of our community!</h2>
+    <p>At Chathubb, our chat moderators play a key role in energizing online communities by engaging in text-based conversations. They spark meaningful discussions, build lasting relationships, and create a fun, imaginative experience for users.</p>
+
+    <p>Building rapport and making customers feel valued, our moderators ensure positive, enjoyable interactions that keep users coming back and contribute to the overall success of our platform.</p>
+
+    <a href="register" class="button">Apply Now</a>
+
+    <h2>What We Expect from You:</h2>
+    <ul>
+        <li>A PC, laptop, or smartphone with a stable internet connection.</li>
+        <li>Flunent English speaker</li>
+        <li>Willingness to work.</li>
+        <li>Comfort and openness to engaging in adult dialogues.</li>
+    </ul>
+
+    <h2>What You Can Expect from Us:</h2>
+    <ul>
+        <li>Prompt and reliable monthly payments.</li>
+        <li>Flexible working hours.</li>
+        <li>A long-term, mutually beneficial working relationship.</li>
+    </ul>
+
+    <h3>Our Impact</h3>
+    <p>We have over 10,000 freelance chat moderators and have paid more than $2 million to our dedicated team!</p>
+
+    <h2>Testimonials from Our Chat Moderators</h2>
+    <div class="testimonials">
+        <div class="testimonial-item">
+            <img src="{{ url_for('static', filename='images/sarah.jpg') }}" alt="Sarah J.">
+            <p>"Chathubb has been a fantastic place to work! The flexibility allows me to manage my time effectively while earning a decent income." - Sarah J.</p>
+        </div>
+        <div class="testimonial-item">
+            <img src="{{ url_for('static', filename='images/michael.jpg') }}" alt="Michael T.">
+            <p>"I love engaging with people from all around the world. Chathubb makes it easy to connect and have fun conversations!" - Michael T.</p>
+        </div>
+        <div class="testimonial-item">
+            <img src="{{ url_for('static', filename='images/emily.jpg') }}" alt="Emily R.">
+            <p>"As a moderator, I appreciate the support from the team at Chathubb. They truly care about our well-being and success!" - Emily R.</p>
+        </div>
+        <div class="testimonial-item">
+            <img src="{{ url_for('static', filename='images/david.jpg') }}" alt="David L.">
+            <p>"Being a chat moderator here has helped me develop my communication skills while working in a friendly environment." - David L.</p>
+        </div>
+    </div>
+
+    <div class="important-info">
+        <h2>Important Information</h2>
+        <p>If you are a U.S. contractor, freelancer, or consultant and you receive payments exceeding $600 from us in a tax year, you will be required to submit a completed W-9 form. This form provides your taxpayer identification information, which we use to report your earnings to the IRS on Form 1099-MISC.</p>
+        <p>Due to the freelance nature of this role and California's regulations regarding additional benefits for freelancers, we regret to inform you that we cannot accept applications from California residents.</p>
+    </div>
+
+    <div class="advertise">
+        <h2>Advertise with Us</h2>
+        <p>If you're interested in advertising with us, please send an email to <a href="mailto:admin@chattuporg.com">admin@chattuporg.com</a>.</p>
+    </div>
+
+    <div class="join-container">
+        <a href="register" class="button">Join Us Today</a>
+        <a href="login" class="button">Log in here</a>
+        <a href="advertisers_login" class="button">Advertisers login</a>
+    </div>
+
+    <h2>Contact Us</h2>
+    <div class="contact-form">
+        <form id="contactForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+        <div class="success-message" id="successMessage">Submitted successfully!</div>
+    </div>
+
+    <footer>
+        <p>Chathubb</p>
+        <p>&copy; Chathubb 2024</p>
+        <p>(928) 284-2190<br>
+        65 Verde Valley School Rd<br>
+        Sedona, Arizona (AZ), 86351</p>
+        <div class="small-links">
+            <a href="privacy_policy" class="button" style="padding: 5px 10px; font-size: 0.8em;">Privacy Policy</a>
+            <a href="cookie_policy" class="button" style="padding: 5px 10px; font-size: 0.8em;">Cookie Policy</a>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript to handle form submission
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Show success message
+            document.getElementById('successMessage').style.display = 'block';
+
+            // Optionally, you can also reset the form
+            this.reset();
+        });
+    </script>
+</body>
+</html>

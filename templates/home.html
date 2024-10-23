@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Fallback color */
+            background-image: 
+                radial-gradient(circle at 0% 0%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 100% 100%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 50% 100%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 25% 75%, #f0f0f0 10%, transparent 10%),
+                radial-gradient(circle at 75% 25%, #f0f0f0 10%, transparent 10%);
+            background-size: 60px 60px; /* Adjust size of the circles */
+            text-align: center;
+            margin: 0; /* Remove margin */
+            padding: 20px; /* Add padding for overall spacing */
+            color: #333;
+        }
+        h1 {
+            color: #28a745; /* Green */
+            font-size: 2.5em;
+            margin-bottom: 10px; /* Space below */
+        }
+        h2 {
+            color: #ffc107; /* Yellow */
+            margin-top: 20px; /* Space above */
+            margin-bottom: 10px; /* Space below */
+        }
+        .star-rating {
+            font-size: 1.5em; /* Size of the stars */
+            color: #ffc107; /* Yellow color for filled stars */
+        }
+        .empty-star {
+            color: #ccc; /* Grey color for empty stars */
+        }
+        nav {
+            display: flex;
+            justify-content: center; /* Center align the nav items */
+            background-color: #f8f9fa; /* Light background for the nav */
+            padding: 2px; /* Further reduced padding for a smaller nav */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            margin-bottom: 20px; /* Space below the nav */
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0; /* Remove margin */
+            display: flex; /* Align links horizontally */
+        }
+        nav li {
+            margin: 0 5px; /* Reduced space between links */
+        }
+        .button {
+            background-color: #28a745; /* Green background */
+            color: #ffffff; /* White text */
+            padding: 3px 6px; /* Further reduced padding for smaller buttons */
+            font-size: 0.7em; /* Smaller font size */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+        form {
+            margin: 20px 0; /* Space above and below forms */
+        }
+        input[type="text"], input[type="hidden"] {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px; /* Space between input and button */
+        }
+        input[readonly] {
+            background-color: #f9f9f9; /* Light background for readonly field */
+            color: #333;
+        }
+        .error {
+            color: #dc3545; /* Red for errors */
+            margin: 10px 0; /* Space above and below error messages */
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0; /* Space between rooms */
+        }
+        footer {
+            margin-top: 50px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <h1>ChatHub</h1>
+    <h2>Welcome, {{ session.get('user_name', 'N/A') }} from {{ session.get('user_country', 'N/A') }}</h2>
+     <p>Your Star Level: {{ star_level }}</p>
+    <!-- Star Rating Section -->
+    <div class="star-rating">
+        {% for star in range(1, 7) %}  <!-- 6-star system -->
+            {% if star <= session.get('star_level', 0) %}
+                &#9733;  <!-- Filled star (★) -->
+            {% else %}
+                <span class="empty-star">&#9734;</span>  <!-- Empty star (☆) -->
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('view_earnings') }}" class="button">Earnings</a></li>
+            <li><a href="{{ url_for('buy_connects') }}" class="button">Buy Connects</a></li>
+            <li><a href="{{ url_for('referral') }}" class="button">Referral</a></li>
+            <li><a href="{{ url_for('logout') }}" class="button">Logout</a></li>
+        </ul>
+    </nav>
+
+    <h2>Create a Room</h2>
+    <form method="POST" action="/home">
+        <!-- Readonly name input populated from the session -->
+        <input type="text" name="name" value="{{ session.get('user_name', '') }}" readonly>
+        <button type="submit" name="create" value="True" class="button">Create Room</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    
+    <h2>Active Chat Rooms</h2>
+    <ul>
+        {% for code, room in rooms.items() %}
+            <li>
+                <span>Room Code: {{ code }} ({{ room['members'] }} members)</span>
+                <form method="POST" action="/join" style="display: inline;">
+                    <input type="hidden" name="name" value="{{ session.get('user_name', '') }}">
+                    <input type="hidden" name="code" value="{{ code }}">
+                    <button type="submit" name="join" value="True" class="button">Join Room</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <footer>
+        <p>Chathubb</p>
+        <p>&copy; Chathubb 2024</p>
+        <p>(928) 284-2190<br>
+        65 Verde Valley School Rd<br>
+        Sedona, Arizona (AZ), 86351</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Connects - Chathubb</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #28a745;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        label, select, input {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upgrade Your Package</h1>
+        <form action="{{ url_for('buy_connects') }}" method="POST" enctype="multipart/form-data">
+            <label for="package">Select Package:</label>
+            <select name="package" required>
+                <option value="1star">1 Star</option>
+                <option value="2star">2 Star</option>
+                <option value="3star">3 Star</option>
+                <option value="4star">4 Star</option>
+                <option value="5star">5 Star</option>
+                <option value="6star">6 Star</option>
+            </select>
+
+            <label for="payment_method">Select Payment Method:</label>
+            <select name="payment_method" required>
+                <option value="payoneer">Payoneer</option>
+                <option value="mpesa">Mpesa</option>
+                <option value="airtel_money">Airtel Money</option>
+                <option value="paypal">PayPal</option>
+                <option value="wise">Wise</option>
+                <option value="wire_transfer">Wire Transfer</option>
+                <option value="usdt">USDT</option>
+                <option value="amazon_pay">Amazon Pay</option>
+                <option value="world_pay">World Pay</option>
+            </select>
+
+            <label for="transaction_code">Transaction Code:</label>
+            <input type="text" name="transaction_code" placeholder="Enter transaction code" required>
+
+            <label for="screenshot">Upload Screenshot (optional):</label>
+            <input type="file" name="screenshot" accept="image/*">
+
+            <button type="submit">Request Upgrade</button>
+        </form>
+        
+        <nav>
+            <a href="{{ url_for('home') }}">Back to Homepage</a>
+            <a href="{{ url_for('referral') }}">Referral Link</a>
+        </nav>
+    </div>
+</body>
+</html>

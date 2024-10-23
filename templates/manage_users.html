@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+            color: #333;
+        }
+        h2 {
+            color: #4CAF50; /* Green */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ffeb3b; /* Yellow */
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .action-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            background-color: #2196F3; /* Blue */
+        }
+        .reset-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            background-color: #4CAF50; /* Green */
+            margin-top: 20px;
+        }
+        .back-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            background-color: #f44336; /* Red */
+            margin-bottom: 20px; /* Space below the button */
+        }
+        select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        select:hover {
+            border-color: #4CAF50; /* Green */
+            background-color: #f0f8e8; /* Light green */
+        }
+        select:focus {
+            outline: none;
+            border-color: #2196F3; /* Blue */
+            background-color: #e3f2fd; /* Light blue */
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<button class="back-button" onclick="goToAdminPanel()">Back to Admin Panel</button>
+
+<h2>Manage Users</h2>
+
+<!-- Search Form -->
+<form method="POST" action="{{ url_for('manage_users') }}" style="margin-bottom: 20px;">
+    <input type="text" name="search_query" placeholder="Search by Name or Email" required>
+    <button type="submit" class="action-button">Search</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Earnings</th>
+            <th>Star Level</th>
+            <th>Account Status</th>
+            <th>Action</th>
+            <th>Admin Comments</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+            <td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+            <td>{{ user.total_earnings }}</td>
+            <td>{{ user.star_level }}</td>
+            <td>{{ 'Suspended' if user.is_suspended else 'Active' }}</td>
+            <td>
+                <select data-user-id="{{ user.id }}" onchange="handleActionChange(this, {{ user.id }})">
+                    <option value="">Select Action</option>
+                    {% if user.is_suspended %}
+                        <option value="unsuspend">Unsuspend</option>
+                        <option value="fine">Fine</option>
+                        <option value="downgrade">Downgrade</option>
+                        <option value="upgrade">Upgrade</option>
+                    {% else %}
+                        <option value="suspend">Suspend</option>
+                        <option value="fine">Fine</option>
+                        <option value="downgrade">Downgrade</option>
+                        <option value="upgrade">Upgrade</option>
+                    {% endif %}
+                </select>
+            </td>
+            <td>
+                <textarea name="comments" placeholder="Add comments">{{ user.comments }}</textarea>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Reset Message Limits Button -->
+<form method="POST" action="{{ url_for('reset_limits') }}">
+    <button type="submit" class="reset-button">Reset Message Limits for All Users</button>
+</form>
+
+<script>
+    function handleActionChange(selectElement, userId) {
+        const actionType = selectElement.value;
+
+        if (actionType) {
+            let reason = prompt("Please provide a reason for this action:");
+            if (reason) {
+                // Create a hidden form and submit the data
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '';
+
+                // User ID field
+                const userIdField = document.createElement('input');
+                userIdField.type = 'hidden';
+                userIdField.name = 'user_id';
+                userIdField.value = userId;
+                form.appendChild(userIdField);
+
+                // Action field
+                const actionField = document.createElement('input');
+                actionField.type = 'hidden';
+                actionField.name = 'action';
+                actionField.value = actionType;
+                form.appendChild(actionField);
+
+                // Reason field
+                const reasonField = document.createElement('input');
+                reasonField.type = 'hidden';
+                reasonField.name = 'reason';
+                reasonField.value = reason;
+                form.appendChild(reasonField);
+
+                // If downgrade, we also need to ask for the new star level (1-5)
+                if (actionType === 'downgrade') {
+                    const newStarLevel = prompt("Please provide the new star level (1-5):");
+                    if (newStarLevel >= 1 && newStarLevel <= 5) {
+                        const starLevelField = document.createElement('input');
+                        starLevelField.type = 'hidden';
+                        starLevelField.name = 'new_star_level';
+                        starLevelField.value = newStarLevel;
+                        form.appendChild(starLevelField);
+                    } else {
+                        alert("Invalid star level. Please enter a number between 1 and 5.");
+                        return; // Prevent form submission
+                    }
+                }
+
+                // If upgrade, we need to ask for the new star level (2-6)
+                if (actionType === 'upgrade') {
+                    const newStarLevel = prompt("Please provide the new star level (2-6):");
+                    if (newStarLevel >= 2 && newStarLevel <= 6) {
+                        const starLevelField = document.createElement('input');
+                        starLevelField.type = 'hidden';
+                        starLevelField.name = 'new_star_level';
+                        starLevelField.value = newStarLevel;
+                        form.appendChild(starLevelField);
+                    } else {
+                        alert("Invalid star level. Please enter a number between 2 and 6.");
+                        return; // Prevent form submission
+                    }
+                }
+
+                // If fine, we also need to ask for the fine amount
+                if (actionType === 'fine') {
+                    const fineAmount = prompt("Please provide the fine amount:");
+                    const fineAmountField = document.createElement('input');
+                    fineAmountField.type = 'hidden';
+                    fineAmountField.name = 'fine_amount';
+                    fineAmountField.value = fineAmount;
+                    form.appendChild(fineAmountField);
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+            } else {
+                alert("Action canceled. Reason is required.");
+            }
+        }
+    }
+
+    function goToAdminPanel() {
+        window.location.href = "{{ url_for('admin_panel') }}";
+    }
+</script>
+
+</body>
+</html>

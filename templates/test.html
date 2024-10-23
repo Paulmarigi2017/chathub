@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-check {
+            margin-bottom: 10px; /* Space between options */
+            display: flex; /* Use flexbox for horizontal alignment */
+            align-items: center; /* Center align the checkbox and label */
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button, .submit-link {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Make it behave like a button */
+        }
+        button:hover, .submit-link:hover {
+            background-color: #45a049; /* Darker green */
+        }
+        #timer {
+            font-size: 20px;
+            color: red;
+            margin-bottom: 20px; /* Space below the timer */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Chat Moderation & English Proficiency Test</h1>
+        <div id="timer">30:00</div>
+        <form action="/submit_test" method="POST">
+            {% for question in questions %}
+                <div class="form-group">
+                    <label>{{ loop.index }}. {{ question.question }}</label>
+                    {% if question.options %}
+                        {% for option in question.options %}
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="answer{{ loop.index }}[]" value="{{ option }}" id="option{{ loop.index }}_{{ loop.index0 }}">
+                                <label class="form-check-label" for="option{{ loop.index }}_{{ loop.index0 }}">{{ option }}</label>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <textarea name="answer{{ loop.index }}" rows="2" placeholder="Your response..."></textarea>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <a class="submit-link" href="{{ url_for('test_notification') }}">Submit Results</a>
+        </form>
+    </div>
+
+    <script>
+        // Set the timer for 30 minutes (1800 seconds)
+        let timeLeft = 1200;
+        const timerDisplay = document.getElementById('timer');
+
+        const countdown = setInterval(() => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                alert("Time's up! Your test will be submitted automatically.");
+                document.querySelector('form').submit(); // Auto-submit the form
+            }
+            timeLeft--;
+        }, 1000);
+
+        // Disable back button
+        history.pushState(null, null, window.location.href);
+        window.onpopstate = function() {
+            history.go(1);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"], 
+        input[type="email"], 
+        input[type="password"], 
+        input[type="tel"],
+        textarea, 
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+        .note {
+            font-size: 0.9em;
+            color: #555;
+        }
+        .policy {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="policy">
+        <h3>Equal Opportunity Employment</h3>
+        <p>At ChatHub, we are committed to hiring equally and do not discriminate based on gender, race, age, religion, or any other characteristic. We value diversity and inclusion in our workforce.</p>
+        <p>Please note that any unfinished applications will be discarded. We encourage you to complete your application thoroughly.</p>
+    </div>
+
+    <h2>Apply</h2>
+    <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
+        <label for="first_name">First Name:</label>
+        <input type="text" name="first_name" placeholder="Enter your first name" required>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" name="last_name" placeholder="Enter your last name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" name="phone" placeholder="Enter your phone number" required pattern="[0-9]{10}">
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Create a password" required>
+
+        <label for="reason_for_joining">Why do you want to join us?</label>
+        <textarea name="reason_for_joining" placeholder="Your reason for joining" required></textarea>
+
+        <label for="chat_experience">Experience in chat moderation:</label>
+        <textarea name="chat_experience" placeholder="Describe your experience" required></textarea>
+
+        <label for="handling_personal_info">How do you handle customers who ask for personal information?</label>
+        <textarea name="handling_personal_info" placeholder="Your approach to handling personal info" required></textarea>
+
+        <label for="gender">Gender:</label>
+        <select name="gender" required>
+            <option value="" disabled selected>Select your gender</option>
+           <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="non-binary">Non-Binary</option>
+                    <option value="genderqueer">Genderqueer</option>
+                    <option value="genderfluid">Genderfluid</option>
+                    <option value="agender">Agender</option>
+                    <option value="bigender">Bigender</option>
+                    <option value="demiboy">Demiboy</option>
+                    <option value="demigirl">Demigirl</option>
+                    <option value="two-spirit">Two-Spirit</option>
+                    <option value="pangender">Pangender</option>
+                    <option value="gender non-conforming">Gender Non-Conforming</option>
+                    <option value="questioning">Questioning</option>
+                    <option value="prefer not to say">Prefer Not to Say</option>
+
+        </select>
+
+        <label for="Nationality">Nationality:</label>
+        <input type="text" name="country" placeholder="Enter your Nationality" required>
+
+        <label for="city">City:</label>
+        <input type="text" name="city" placeholder="Enter your city" required>
+
+        <label for="zipcode">Zip Code:</label>
+        <input type="text" name="zipcode" placeholder="Enter your zip code" required>
+
+        <label for="address">Address:</label>
+        <input type="text" name="address" placeholder="Enter your address" required>
+
+        <label for="source">How did you hear about us?</label>
+        <input type="text" name="source" placeholder="Your source of information" required>
+
+
+        <label for="source">How many hours are you available?</label>
+        <input type="text" name="source" placeholder="Enter the number of hours in a day you are available." required>
+
+        <label for="file">Upload ID/Driver's License:</label>
+        <input type="file" name="file" accept=".png, .jpg, .jpeg, .pdf" required>
+
+        <label for="selfie">Upload a Selfie holding your id for Verification:</label>
+        <input type="file" name="selfie" accept=".png, .jpg, .jpeg" capture="user" required>
+        <p class="note">Please ensure your selfie is clear and matches your ID.</p>
+
+        <label>
+            <input type="checkbox" name="terms_agreement" required> I agree to the terms and conditions
+        </label>
+
+        <button type="submit">Submit application</button>
+    </form>
+
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a>.</p>
+</body>
+</html>

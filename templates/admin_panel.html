@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50; /* Green */
+        }
+        .admin-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .admin-button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+        .logout-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #f44336; /* Red */
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <p>Welcome to the admin panel.</p>
+
+    <div>
+        <a class="admin-button" href="{{ url_for('manage_withdrawals') }}">Manage Withdrawals</a>
+        <a class="admin-button" href="{{ url_for('manage_users') }}">Manage Users</a>
+        <a class="admin-button" href="{{ url_for('admin_notifications') }}">Notifications</a>
+        <a class="admin-button" href="{{ url_for('manage_registrations') }}">Manage Registrations</a>
+        <a class="admin-button" href="{{ url_for('view_upgrade_requests') }}">Manage Upgrade Requests</a>
+    </div>
+
+    <a class="logout-link" href="{{ url_for('admin_logout') }}">Logout</a>
+</body>
+</html>

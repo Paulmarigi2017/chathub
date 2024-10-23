@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Notifications</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50; /* Green */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ffeb3b; /* Yellow */
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #2196F3; /* Blue */
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        a:hover {
+            background-color: #1976D2; /* Darker blue */
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Notifications</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notification in notifications %}
+            <tr>
+                <td>{{ notification.message }}</td>
+                <td>{{ notification.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            </tr>
+            {% endfor %}
+            {% if not notifications %}
+            <tr>
+                <td colspan="2">No notifications available.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('admin_panel') }}">Back to Admin Dashboard</a>
+</body>
+</html>

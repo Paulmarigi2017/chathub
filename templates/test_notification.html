@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Submission Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 1.1em;
+            color: #555;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submission Successful!</h1>
+        <p>Your answers have been submitted and will be reviewed. Successful applicants will be notified via email. Please check your spam folder in case the email goes there.</p>
+        <button onclick="window.location.href='{{ url_for('/register') }}'">Back to Home</button>
+    </div>
+</body>
+</html>

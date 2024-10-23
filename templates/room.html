@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - {{ code }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ece5dd;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar for rooms */
+        .sidebar {
+            width: 30%;
+            background-color: #075e54;
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.hidden {
+            display: none; /* Completely remove sidebar from the layout */
+        }
+
+        .room-info {
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .room-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .room-list li {
+            padding: 15px;
+            background-color: #128c7e;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .room-list li:hover {
+            background-color: #25d366;
+        }
+
+        /* Chat section */
+        .chat-container {
+            flex-grow: 1; /* Allow the chat container to take up remaining space */
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-left: 1px solid #ddd;
+        }
+
+        /* Message bubbles */
+        #messages {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background-color: #e5ddd5;
+        }
+
+        .message {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 20px;
+            max-width: 60%;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .message.received {
+            background-color: #fff;
+            align-self: flex-start;
+            text-align: left;
+        }
+
+        /* Typing notification */
+        .typing-notification {
+            font-style: italic;
+            color: #555;
+            margin: 10px 0;
+        }
+
+        /* Input form */
+        #messageForm {
+            display: flex;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+        }
+
+        #messageInput {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        button {
+            background-color: #128c7e;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #25d366;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .chat-container {
+                width: 100%;
+            }
+        }
+
+        /* Hide flashing advertisements */
+        .flashing-ad {
+            display: none; /* This will hide the flashing advertisement */
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar for rooms -->
+    <div class="sidebar" id="sidebar">
+        <h2>Chat Rooms</h2>
+        <ul class="room-list">
+            <li>Room 1</li>
+            <li>Room 2</li>
+            <li>Room 3</li>
+        </ul>
+    </div>
+
+    <!-- Main chat container -->
+    <div class="chat-container">
+        <div id="messages">
+            <!-- Message bubbles will be dynamically inserted here -->
+        </div>
+        <div id="typingNotification" class="typing-notification" style="display:none;"></div>
+
+        <form id="messageForm">
+            <input type="text" id="messageInput" placeholder="Type a message" autocomplete="off" required>
+            <button type="submit">➤</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const room = "{{ code }}"; // Room code from Flask backend
+
+        // Function to toggle sidebar visibility
+        function toggleSidebar(show) {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden', !show);
+        }
+
+        // Listen for incoming messages and append them to the chat
+        socket.on('message', function(data) {
+            const messagesDiv = document.getElementById('messages');
+            const messageElement = document.createElement('div');
+
+            // Check if message starts with "AD: "
+            const isProductServiceMessage = data.message.startsWith("AD: ");
+
+            if (isProductServiceMessage) {
+                // Display product or service message without a sender's name
+                messageElement.classList.add('message', 'received');
+                messageElement.textContent = data.message;
+            } else {
+                // Regular user message handling
+                messageElement.classList.add('message', data.name === "{{ session.get('name') }}" ? 'sent' : 'received');
+                messageElement.textContent = `${data.name}: ${data.message}`;
+            }
+
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to bottom
+
+            // Clear typing notification
+            document.getElementById('typingNotification').style.display = 'none';
+        });
+
+        // Display typing notification
+        socket.on('typing', function(data) {
+            const typingNotification = document.getElementById('typingNotification');
+            typingNotification.textContent = `${data.name} is typing...`;
+            typingNotification.style.display = 'block';
+
+            // Clear typing notification after 3 seconds
+            setTimeout(() => {
+                typingNotification.style.display = 'none';
+            }, 3000);
+        });
+
+        // Send message to the server
+        document.getElementById('messageForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+
+            if (message.trim() !== '') {
+                socket.emit('message', { name: "{{ session.get('name') }}", message: message });
+                messageInput.value = ''; // Clear the input field
+            }
+        });
+
+        // Emit typing event when user is typing
+        document.getElementById('messageInput').addEventListener('input', function() {
+            socket.emit('typing', { name: "{{ session.get('name') }}" });
+        });
+
+        // Hide the sidebar when the chat starts
+        toggleSidebar(false);
+    </script>
+</body>
+</html>

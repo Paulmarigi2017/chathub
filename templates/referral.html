@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Referral Link - Chathubb</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        nav {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #28a745;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your Referral Link</h1>
+        
+        <p>Share this link to refer others to Chathubb:</p>
+        <input type="text" value="{{ referral_link }}" readonly>
+        <button onclick="copyReferralLink()">Copy Link</button>
+
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('buy_connects') }}">Buy Connects</a>
+        </nav>
+
+        <script>
+            function copyReferralLink() {
+                const referralInput = document.querySelector('input[type="text"]');
+                referralInput.select();
+                document.execCommand('copy');
+                alert('Referral link copied to clipboard!');
+            }
+        </script>
+    </div>
+</body>
+</html>

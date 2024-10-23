@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .user-detail {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; /* Add margin to separate from the search */
+        }
+        .detail-row {
+            margin: 10px 0;
+        }
+        .back-btn {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background-color: #1976D2;
+        }
+        .search-form {
+            margin-bottom: 20px; /* Space between search form and user details */
+        }
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px; /* Set a width for the input */
+        }
+        .search-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px; /* Space between input and button */
+        }
+        .search-btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>User Details</h1>
+    
+    <div class="search-form">
+        <form method="POST" action="{{ url_for('search_user') }}">
+            <input type="text" name="email" placeholder="Search by email" class="search-input" required>
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+
+    {% if user %}
+    <div class="user-detail">
+        <div class="detail-row"><strong>User ID:</strong> {{ user.id }}</div>
+        <div class="detail-row"><strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}</div>
+        <div class="detail-row"><strong>Email:</strong> {{ user.email }}</div>
+        <div class="detail-row"><strong>Phone:</strong> {{ user.phone }}</div>
+        <div class="detail-row"><strong>Country:</strong> {{ user.country }}</div>
+        <div class="detail-row"><strong>City:</strong> {{ user.city }}</div>
+        <div class="detail-row"><strong>Address:</strong> {{ user.address }}</div>
+        <div class="detail-row"><strong>Referral Code:</strong> {{ user.referral_code }}</div>
+        <div class="detail-row"><strong>Reason for Joining:</strong> {{ user.reason }}</div>
+        <div class="detail-row"><strong>Chat Experience:</strong> {{ user.experience }}</div>
+        <div class="detail-row"><strong>Handling Personal Info:</strong> {{ user.handle_info }}</div>
+        <div class="detail-row"><strong>Gender:</strong> {{ user.gender }}</div>
+        <div class="detail-row"><strong>Zip Code:</strong> {{ user.zipcode }}</div>
+        <div class="detail-row"><strong>Terms Agreement:</strong> {{ 'Yes' if user.terms_agreement else 'No' }}</div>
+        
+        <a href="{{ url_for('manage_registrations') }}" class="back-btn">Back to Registrations</a>
+    </div>
+    {% else %}
+        <div class="user-detail">
+            <p>No user found with the provided email.</p>
+            <a href="{{ url_for('manage_registrations') }}" class="back-btn">Back to Registrations</a>
+        </div>
+    {% endif %}
+
+</body>
+</html>
+

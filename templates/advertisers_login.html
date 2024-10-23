@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertisers Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: #333;
+        }
+        label {
+            margin-top: 10px;
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"], 
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049; /* Darker green */
+        }
+        .policy {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="policy">
+        <h3>Welcome!</h3>
+        <p>Kindly sign in with your advertisers ID and password. In case of anything, contact the customer care desk.</p>
+    </div>
+
+    <h2>Advertisers Login</h2>
+    <form action="{{ url_for('advertisers_login') }}" method="POST">
+        <label for="username">Advertisers ID:</label>
+        <input type="text" name="username" placeholder="Enter your advertisers ID" required>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+  
+</html>

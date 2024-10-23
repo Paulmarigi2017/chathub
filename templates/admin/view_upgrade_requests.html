@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Requests - Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50; /* Green */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #ffeb3b; /* Yellow */
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        button[type="submit"][value="approve"] {
+            background-color: #4CAF50; /* Green */
+        }
+        button[type="submit"][value="deny"] {
+            background-color: #f44336; /* Red */
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #2196F3; /* Blue */
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        a:hover {
+            background-color: #1976D2; /* Darker blue */
+        }
+        img {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upgrade Requests</h1>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Requested Package</th>
+                <th>Payment Method</th>
+                <th>Transaction Code</th>
+                <th>Screenshot</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in upgrade_requests %}
+                <tr>
+                    <td>{{ request.user.first_name }} {{ request.user.last_name }}</td>
+                    <td>{{ request.package }}</td>
+                    <td>{{ request.payment_method }}</td>
+                    <td>{{ request.transaction_code }}</td>
+                    <td>
+                        {% if request.screenshot_filename %}
+                            <img src="{{ url_for('static', filename='uploads/' ~ request.screenshot_filename) }}" alt="Screenshot">
+                        {% else %}
+                            No screenshot provided
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{{ url_for('view_upgrade_requests') }}" method="POST">
+                            <input type="hidden" name="request_id" value="{{ request.id }}">
+                            <button type="submit" name="action" value="approve">Approve</button>
+                            <button type="submit" name="action" value="deny">Deny</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">No upgrade requests available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('admin_panel') }}">Back to Admin Dashboard</a>
+</body>
+</html>
